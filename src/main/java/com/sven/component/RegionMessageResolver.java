@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.ITemplateContext;
@@ -23,6 +24,7 @@ import org.thymeleaf.util.Validate;
 import com.sven.model.Region;
 import com.sven.utils.LangCodeLocaleUtils;
 
+@Component
 public class RegionMessageResolver extends AbstractMessageResolver
         implements MessageSourceAware
 {

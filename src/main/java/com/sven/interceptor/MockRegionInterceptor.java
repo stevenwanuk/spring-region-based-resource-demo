@@ -2,6 +2,7 @@ package com.sven.interceptor;
 
 import java.util.Locale;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,11 +13,23 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.sven.model.Region;
+import com.sven.service.RegionService;
 
 public class MockRegionInterceptor extends HandlerInterceptorAdapter
 {
     @Autowired
     private Region region;
+
+    @Autowired
+    RegionService regionService;
+
+    private Locale defaultLocale;
+
+    @PostConstruct
+    public void init()
+    {
+        defaultLocale = new Locale("en", "GB");
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(MockRegionInterceptor.class);
 
@@ -30,12 +43,17 @@ public class MockRegionInterceptor extends HandlerInterceptorAdapter
         if (!StringUtils.isEmpty(testCountryCode))
         {
             LOG.info("Setting region using testCountryCode " + testCountryCode);
-            if (testCountryCode.equalsIgnoreCase("br")) {
-            
-                region.setLocale(new Locale("pt", "BR"));
-            } else {
-                region.setLocale(new Locale("en", "GB"));
-            }
+
+            Locale locale = regionService.getLocale(testCountryCode).orElseThrow(
+                    () -> new RuntimeException(
+                            String.format("%s not found", testCountryCode)));
+
+            region.setLocale(locale);
+        }
+        else
+        {
+
+            region.setLocale(defaultLocale);
         }
 
         return true;

@@ -20,7 +20,7 @@ public class WebConfig extends WebMvcConfigurerAdapter
     @Override
     public void addInterceptors(final InterceptorRegistry registry)
     {
-        registry.addInterceptor(mockRegionInterceptor()).excludePathPatterns("/error");
+        registry.addInterceptor(mockRegionInterceptor()).excludePathPatterns("/error").excludePathPatterns("/region-images/**");
 
     }
 
